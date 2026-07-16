@@ -54,6 +54,26 @@
     @keyframes wheelSettle { 0% { transform: translateY(0); } 35% { transform: translateY(-16px) rotate(-5deg); } 70% { transform: translateY(0) rotate(2deg); } 100% { transform: none; } }
     @keyframes marqueeMove2 { from { transform: translateX(-50%); } to { transform: translateX(0); } }
     @keyframes cueBob { 0%, 100% { transform: translateY(0); opacity: .6; } 50% { transform: translateY(8px); opacity: 1; } }
+    .mobile-menu { display: none; }
+    @media (max-width: 850px) {
+      .site-header-inner { height: 64px !important; padding: 0 16px !important; gap: 12px !important; }
+      .site-header-logo > span:first-child { font-size: 21px !important; }
+      .desktop-nav { display: none !important; }
+      .mobile-menu { display: block; position: static; }
+      .mobile-menu > summary { list-style: none; cursor: pointer; border: 1px solid var(--line); border-radius: 8px; padding: 9px 11px; color: var(--text); font: 700 11px/1 ui-monospace, monospace; letter-spacing: 1.2px; }
+      .mobile-menu > summary::-webkit-details-marker { display: none; }
+      .mobile-menu[open] > summary { border-color: var(--acc); color: var(--acc); }
+      .mobile-menu-panel { position: absolute; top: 67px; left: 0; right: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 12px 16px 16px; background: var(--bg2); border-bottom: 1px solid var(--line); box-shadow: 0 14px 30px var(--shadow); }
+      .mobile-menu-panel a { padding: 12px 10px !important; border: 1px solid var(--line) !important; border-radius: 6px; font-size: 14px !important; }
+      .header-controls { gap: 4px !important; }
+      .theme-toggle { display: none; }
+      .language-switch { padding: 2px !important; }
+      .language-switch button { padding: 5px 6px !important; font-size: 10px !important; }
+    }
+    @media (max-width: 380px) {
+      .site-header-inner { padding: 0 10px !important; gap: 7px !important; }
+      .mobile-menu-panel { grid-template-columns: 1fr; padding-left: 10px; padding-right: 10px; }
+    }
   </style>
 </helmet>
 
@@ -62,24 +82,32 @@
   <!-- ============ HEADER ============ -->
   <header style="position:fixed;top:0;left:0;right:0;z-index:60;background:var(--hdr);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line)">
     <span style="display:block;height:3px;background:repeating-linear-gradient(-45deg,#f5a800 0 10px,#16181f 10px 20px)"></span>
-    <div style="max-width:1280px;margin:0 auto;padding:0 28px;display:flex;align-items:center;gap:28px;height:69px">
-      <a href="#/" style="text-decoration:none;color:var(--text);display:flex;flex-direction:column;gap:3px;flex:none">
+    <div class="site-header-inner" style="max-width:1280px;margin:0 auto;padding:0 28px;display:flex;align-items:center;gap:28px;height:69px">
+      <a class="site-header-logo" href="#/" style="text-decoration:none;color:var(--text);display:flex;flex-direction:column;gap:3px;flex:none">
         <span style="font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:900;font-size:24px;letter-spacing:1px;line-height:1">LOGI</span>
         <span style="display:block;height:4px;background:repeating-linear-gradient(-45deg,#f5a800 0 7px,#f07818 7px 14px)"></span>
       </a>
-      <nav style="display:flex;gap:4px;flex:1;justify-content:center;flex-wrap:wrap">
+      <nav class="desktop-nav" style="display:flex;gap:4px;flex:1;justify-content:center;flex-wrap:wrap">
         <sc-for list="{{ navItems }}" as="ni" hint-placeholder-count="7">
           <a href="{{ ni.href }}" style="text-decoration:none;color:var(--text);opacity:{{ ni.op }};font-size:14px;font-weight:600;letter-spacing:.4px;padding:8px 12px 6px 12px;border-bottom:2px solid {{ ni.uc }};transition:opacity .2s,color .2s,border-color .2s,transform .2s,text-shadow .2s" style-hover="opacity:1;color:var(--acc);border-bottom-color:var(--acc);transform:translateY(-2px);text-shadow:0 0 14px var(--glow)">{{ ni.label }}</a>
         </sc-for>
       </nav>
-      <div style="display:flex;align-items:center;gap:8px;flex:none">
-        <div style="display:flex;gap:2px;border:1px solid var(--line);border-radius:8px;padding:3px;background:var(--bg2)">
+      <div class="header-controls" style="display:flex;align-items:center;gap:8px;flex:none">
+        <div class="language-switch" style="display:flex;gap:2px;border:1px solid var(--line);border-radius:8px;padding:3px;background:var(--bg2)">
           <sc-for list="{{ langBtns }}" as="lb" hint-placeholder-count="3">
             <button data-lang="{{ lb.code }}" onClick="{{ setLang }}" style="border:none;cursor:pointer;font-size:11px;font-weight:700;letter-spacing:.6px;padding:5px 9px;border-radius:6px;background:{{ lb.bg }};color:{{ lb.col }}">{{ lb.label }}</button>
           </sc-for>
         </div>
-        <button onClick="{{ toggleTheme }}" style="cursor:pointer;background:transparent;border:1px solid var(--line);border-radius:8px;color:var(--text);font-family:ui-monospace,monospace;font-size:10px;letter-spacing:2px;padding:9px 12px;transition:border-color .2s" style-hover="border-color:var(--acc)">{{ themeLabel }}</button>
+        <button class="theme-toggle" onClick="{{ toggleTheme }}" style="cursor:pointer;background:transparent;border:1px solid var(--line);border-radius:8px;color:var(--text);font-family:ui-monospace,monospace;font-size:10px;letter-spacing:2px;padding:9px 12px;transition:border-color .2s" style-hover="border-color:var(--acc)">{{ themeLabel }}</button>
       </div>
+      <details class="mobile-menu">
+        <summary>MENU</summary>
+        <nav class="mobile-menu-panel">
+          <sc-for list="{{ navItems }}" as="ni" hint-placeholder-count="7">
+            <a href="{{ ni.href }}" style="text-decoration:none;color:var(--text);opacity:{{ ni.op }};font-weight:600;border-bottom:2px solid {{ ni.uc }}">{{ ni.label }}</a>
+          </sc-for>
+        </nav>
+      </details>
     </div>
   </header>
 
