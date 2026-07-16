@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LOGIMOTORS — Forklifts: sale, rent, service, parts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800;900&amp;family=Exo+2:wght@400;500;600;700&amp;family=Noto+Sans+Georgian:wght@400;600;700;900&amp;display=swap" rel="stylesheet">
+  <style>
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: #101218; color: #f2f2ec;
+      --bg: #101218; --bg2: #161922; --card: #1a1e29; --text: #f2f2ec; --mut: #98a0af;
+      --line: rgba(255,255,255,.09); --acc: #f5a800; --acc2: #f07818;
+      --gridc: rgba(245,168,0,.13); --glow: rgba(245,168,0,.10);
+      --hdr: rgba(16,18,24,.72); --shadow: rgba(0,0,0,.5); --phbg: rgba(255,255,255,.03);
+      background: var(--bg); color: var(--text);
+      font-family: 'Exo 2','Noto Sans Georgian',system-ui,sans-serif;
+      transition: background .4s ease, color .4s ease;
+    }
+    body[data-day="1"] {
+      --bg: #f2f2ee; --bg2: #ffffff; --card: #ffffff; --text: #16181f; --mut: #5b6274;
+      --line: rgba(20,22,30,.13); --gridc: rgba(240,120,24,.20); --glow: rgba(245,168,0,.16);
+      --hdr: rgba(242,242,238,.8); --shadow: rgba(20,22,30,.14); --phbg: rgba(20,22,30,.03);
+    }
+    a { color: var(--acc); }
+    a:hover { color: var(--acc2); }
+    ::selection { background: #f5a800; color: #16181f; }
+    input, textarea, select, button { font-family: inherit; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+    @keyframes gridScroll { from { background-position: 0 0; } to { background-position: 0 64px; } }
+    @keyframes floatA { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-18px); } }
+    @keyframes floatB { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(14px); } }
+    @keyframes marqueeMove { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @keyframes spinSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @keyframes pulseGlow { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+    @keyframes gridMove { from { transform: translateY(-64px); } to { transform: translateY(0); } }
+    @keyframes forkliftDrive { from { transform: translateX(-360px); } to { transform: translateX(calc(100vw + 80px)); } }
+    @keyframes wheelSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @keyframes bodyBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+    @keyframes forkBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-16px); } }
+    @keyframes tireIn { 0% { transform: translateX(640px) rotate(720deg); opacity: 0; } 10% { opacity: 1; } 100% { transform: translateX(0) rotate(0deg); opacity: 1; } }
+    @keyframes rimIn { 0% { transform: translateX(760px) rotate(900deg) scale(.85); opacity: 0; } 10% { opacity: 1; } 100% { transform: none; opacity: 1; } }
+    @keyframes boltPop { 0% { transform: scale(0); } 60% { transform: scale(1.4); } 100% { transform: scale(1); } }
+    @keyframes wheelSettle { 0% { transform: translateY(0); } 35% { transform: translateY(-16px) rotate(-5deg); } 70% { transform: translateY(0) rotate(2deg); } 100% { transform: none; } }
+    @keyframes marqueeMove2 { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+    @keyframes cueBob { 0%, 100% { transform: translateY(0); opacity: .6; } 50% { transform: translateY(8px); opacity: 1; } }
+  </style>
+</helmet>
+
+<div style="min-height:100vh;background:radial-gradient(1100px 520px at 85% -5%,var(--glow),transparent 60%),radial-gradient(900px 600px at -12% 40%,var(--glow),transparent 55%),var(--bg);color:var(--text)">
+
+  <!-- ============ HEADER ============ -->
+  <header style="position:fixed;top:0;left:0;right:0;z-index:60;background:var(--hdr);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line)">
+    <span style="display:block;height:3px;background:repeating-linear-gradient(-45deg,#f5a800 0 10px,#16181f 10px 20px)"></span>
+    <div style="max-width:1280px;margin:0 auto;padding:0 28px;display:flex;align-items:center;gap:28px;height:69px">
+      <a href="#/" style="text-decoration:none;color:var(--text);display:flex;flex-direction:column;gap:3px;flex:none">
+        <span style="font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:900;font-size:24px;letter-spacing:1px;line-height:1">LOGI</span>
+        <span style="display:block;height:4px;background:repeating-linear-gradient(-45deg,#f5a800 0 7px,#f07818 7px 14px)"></span>
+      </a>
+      <nav style="display:flex;gap:4px;flex:1;justify-content:center;flex-wrap:wrap">
+        <sc-for list="{{ navItems }}" as="ni" hint-placeholder-count="7">
+          <a href="{{ ni.href }}" style="text-decoration:none;color:var(--text);opacity:{{ ni.op }};font-size:14px;font-weight:600;letter-spacing:.4px;padding:8px 12px 6px 12px;border-bottom:2px solid {{ ni.uc }};transition:opacity .2s,color .2s,border-color .2s,transform .2s,text-shadow .2s" style-hover="opacity:1;color:var(--acc);border-bottom-color:var(--acc);transform:translateY(-2px);text-shadow:0 0 14px var(--glow)">{{ ni.label }}</a>
+        </sc-for>
+      </nav>
+      <div style="display:flex;align-items:center;gap:8px;flex:none">
+        <div style="display:flex;gap:2px;border:1px solid var(--line);border-radius:8px;padding:3px;background:var(--bg2)">
+          <sc-for list="{{ langBtns }}" as="lb" hint-placeholder-count="3">
+            <button data-lang="{{ lb.code }}" onClick="{{ setLang }}" style="border:none;cursor:pointer;font-size:11px;font-weight:700;letter-spacing:.6px;padding:5px 9px;border-radius:6px;background:{{ lb.bg }};color:{{ lb.col }}">{{ lb.label }}</button>
+          </sc-for>
+        </div>
+        <button onClick="{{ toggleTheme }}" style="cursor:pointer;background:transparent;border:1px solid var(--line);border-radius:8px;color:var(--text);font-family:ui-monospace,monospace;font-size:10px;letter-spacing:2px;padding:9px 12px;transition:border-color .2s" style-hover="border-color:var(--acc)">{{ themeLabel }}</button>
+      </div>
+    </div>
+  </header>
+
+  <sc-if value="{{ ready }}" hint-placeholder-val="{{ true }}">
+  <main style="padding-top:72px">
+
+    <!-- ============ HOME ============ -->
+    <sc-if value="{{ pHome }}" hint-placeholder-val="{{ true }}">
+      
+    </sc-if>
+
+    <!-- ============ ABOUT ============ -->
+    <sc-if value="{{ pAbout }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="About" style="animation:fadeUp .5s ease both;max-width:1280px;margin:0 auto;padding:72px 28px">
+        <div style="display:flex;align-items:center;gap:12px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:3.5px;color:var(--acc);margin-bottom:12px"><span style="display:inline-block;width:26px;height:4px;background:repeating-linear-gradient(-45deg,#f5a800 0 5px,#f07818 5px 10px)"></span>// COMPANY</div>
+        <h2 style="font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:800;font-size:clamp(30px,4vw,52px);margin:0 0 8px 0;letter-spacing:-.5px">{{ t.aboutTitle }}</h2>
+        <span style="display:block;width:180px;height:7px;background:repeating-linear-gradient(-45deg,#f5a800 0 12px,#f07818 12px 18px,#16181f 18px 30px);margin:16px 0 40px 0"></span>
+        <p style="font-size:22px;line-height:1.65;max-width:900px;margin:0 0 44px 0;text-wrap:pretty">{{ tx.about1 }}</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px;margin-bottom:56px">
+          <div style="border:1px solid var(--line);background:var(--card);padding:30px;clip-path:polygon(0 0,calc(100% - 22px) 0,100% 22px,100% 100%,0 100%)">
+            <div style="font-family:ui-monospace,monospace;font-size:12px;letter-spacing:2.5px;color:var(--acc);margin-bottom:14px">CONCEPT</div>
+            <p style="margin:0;color:var(--mut);font-size:15px;line-height:1.7;text-wrap:pretty">{{ tx.about2 }}</p>
+          </div>
+          <div style="border:1px solid var(--line);background:var(--card);padding:30px;clip-path:polygon(0 0,calc(100% - 22px) 0,100% 22px,100% 100%,0 100%)">
+            <div style="font-family:ui-monospace,monospace;font-size:12px;letter-spacing:2.5px;color:var(--acc);margin-bottom:14px">POLICY</div>
+            <p style="margin:0;color:var(--mut);font-size:15px;line-height:1.7;text-wrap:pretty">{{ tx.about3 }}</p>
+          </div>
+        </div>
+        <div style="border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:26px 0;text-align:center;font-family:ui-monospace,monospace;font-size:14px;letter-spacing:3px;color:var(--mut)">{{ t.anyBrand }}</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin-top:56px">
+          <sc-for list="{{ stats }}" as="st" hint-placeholder-count="4">
+            <div style="border:1px solid var(--line);background:var(--card);padding:28px 26px;clip-path:polygon(0 0,calc(100% - 20px) 0,100% 20px,100% 100%,0 100%)">
+              <div style="font-family: 'Unbounded','Noto Sans Georgian',sans-serif; font-weight: 800; font-size: 40px; background: linear-gradient(90deg,#f5a800,#f07818); -webkit-background-clip: text; background-clip: text; color: transparent; line-height: 1.1; position: relative" data-om-label="30000">{{ st.n }}</div>
+              <div style="margin-top:8px;color:var(--mut);font-size:14px">{{ st.label }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ============ PRODUCTS ============ -->
+    <sc-if value="{{ pProducts }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Products" style="animation:fadeUp .5s ease both;max-width:1280px;margin:0 auto;padding:72px 28px">
+        <div style="display:flex;align-items:center;gap:12px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:3.5px;color:var(--acc);margin-bottom:12px"><span style="display:inline-block;width:26px;height:4px;background:repeating-linear-gradient(-45deg,#f5a800 0 5px,#f07818 5px 10px)"></span>// CATALOG</div>
+        <h2 style="font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:800;font-size:clamp(30px,4vw,52px);margin:0 0 32px 0;letter-spacing:-.5px">{{ t.productsTitle }}</h2>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+          <sc-for list="{{ modeTabs }}" as="mt" hint-placeholder-count="5">
+            <button data-k="{{ mt.k }}" onClick="{{ setMode }}" style="cursor:pointer;border:1px solid {{ mt.bd }};background:{{ mt.bg }};color:{{ mt.col }};font-weight:700;font-size:14px;padding:10px 22px;clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)">{{ mt.label }}</button>
+          </sc-for>
+        </div>
+        <sc-if value="{{ showFuel }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:40px">
+            <sc-for list="{{ fuelChips }}" as="fc" hint-placeholder-count="4">
+              <button data-k="{{ fc.k }}" onClick="{{ setFuel }}" style="cursor:pointer;border:1px solid {{ fc.bd }};border-radius:99px;background:transparent;color:{{ fc.col }};font-family:ui-monospace,monospace;font-size:11px;letter-spacing:1.5px;padding:7px 16px">{{ fc.label }}</button>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ noProds }}" hint-placeholder-val="{{ false }}">
+          <div style="border:1px dashed var(--line);padding:60px;text-align:center;color:var(--mut);font-size:16px">{{ t.noProducts }}</div>
+        </sc-if>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px">
+          <sc-for list="{{ prods }}" as="pr" hint-placeholder-count="6">
+            <div data-id="{{ pr.id }}" onClick="{{ openProduct }}" onMouseMove="{{ tilt }}" onMouseLeave="{{ untilt }}" style="cursor:pointer;border:1px solid var(--line);background:var(--card);clip-path:polygon(0 0,calc(100% - 24px) 0,100% 24px,100% 100%,0 100%);transition:transform .25s,border-color .25s,box-shadow .25s;will-change:transform" style-hover="border-color:var(--acc);box-shadow:0 20px 50px var(--shadow),0 0 30px var(--glow)">
+              <sc-if value="{{ pr.hasImg }}" hint-placeholder-val="{{ false }}">
+                <img src="{{ pr.img }}" alt="{{ pr.title }}" style="width:100%;height:200px;object-fit:cover;display:block">
+              </sc-if>
+              <sc-if value="{{ pr.noImg }}" hint-placeholder-val="{{ true }}">
+                <div style="height:200px;background:var(--phbg);background-image:repeating-linear-gradient(45deg,transparent 0 14px,var(--line) 14px 15px);display:flex;align-items:center;justify-content:center"><span style="font-family:ui-monospace,monospace;font-size:11px;letter-spacing:2px;color:var(--mut)">{{ t.photo }}</span></div>
+              </sc-if>
+              <div style="padding:20px 22px 24px 22px">
+                <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
+                  <sc-for list="{{ pr.badges }}" as="bd" hint-placeholder-count="2">
+                    <span style="font-family:ui-monospace,monospace;font-size:10px;letter-spacing:1.5px;border:1px solid var(--line);border-radius:99px;padding:4px 10px;color:var(--mut)">{{ bd }}</span>
+                  </sc-for>
+                </div>
+                <div style="font-weight:700;font-size:17px;line-height:1.35;margin-bottom:6px">{{ pr.title }}</div>
+                <div style="font-family:ui-monospace,monospace;font-size:11px;letter-spacing:1.5px;color:var(--mut);margin-bottom:12px">{{ pr.brand }}</div>
+                <div style="font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:700;font-size:20px;background:linear-gradient(90deg,#f5a800,#f07818);-webkit-background-clip:text;background-clip:text;color:transparent">{{ pr.price }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ============ NEWS ============ -->
+    <sc-if value="{{ pNews }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="News" style="animation:fadeUp .5s ease both;max-width:1000px;margin:0 auto;padding:72px 28px">
+        <div style="display:flex;align-items:center;gap:12px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:3.5px;color:var(--acc);margin-bottom:12px"><span style="display:inline-block;width:26px;height:4px;background:repeating-linear-gradient(-45deg,#f5a800 0 5px,#f07818 5px 10px)"></span>// FEED</div>
+        <h2 style="font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:800;font-size:clamp(30px,4vw,52px);margin:0 0 44px 0;letter-spacing:-.5px">{{ t.newsTitle }}</h2>
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <sc-for list="{{ newsList }}" as="nw" hint-placeholder-count="3">
+            <article style="border:1px solid var(--line);background:var(--card);clip-path:polygon(0 0,calc(100% - 24px) 0,100% 24px,100% 100%,0 100%);display:flex;gap:0;flex-wrap:wrap;transition:border-color .25s" style-hover="border-color:var(--acc)">
+              <sc-if value="{{ nw.hasImg }}" hint-placeholder-val="{{ false }}">
+                <img src="{{ nw.img }}" alt="{{ nw.title }}" style="width:240px;object-fit:cover;display:block;flex:none;min-height:100%">
+              </sc-if>
+              <div style="padding:28px 30px;flex:1;min-width:280px">
+                <div style="font-family:ui-monospace,monospace;font-size:12px;letter-spacing:2px;color:var(--acc);margin-bottom:12px">{{ nw.date }}</div>
+                <h3 style="font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:700;font-size:20px;line-height:1.4;margin:0 0 12px 0;text-wrap:balance">{{ nw.title }}</h3>
+                <p style="margin:0;color:var(--mut);font-size:15px;line-height:1.7;text-wrap:pretty">{{ nw.body }}</p>
+              </div>
+            </article>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ============ SERVICE ============ -->
+    <sc-if value="{{ pService }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Service" style="animation:fadeUp .5s ease both;max-width:1280px;margin:0 auto;padding:72px 28px">
+        <div style="display:flex;align-items:center;gap:12px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:3.5px;color:var(--acc);margin-bottom:12px"><span style="display:inline-block;width:26px;height:4px;background:repeating-linear-gradient(-45deg,#f5a800 0 5px,#f07818 5px 10px)"></span>// SERVICE</div>
+        <h2 style="font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:800;font-size:clamp(30px,4vw,52px);margin:0 0 20px 0;letter-spacing:-.5px">{{ t.serviceTitle }}</h2>
+        <p style="font-size:19px;line-height:1.7;color:var(--mut);max-width:820px;margin:0 0 48px 0;text-wrap:pretty">{{ tx.serviceIntro }}</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:64px">
+          <sc-for list="{{ services }}" as="sv" hint-placeholder-count="5">
+            <div onMouseMove="{{ tilt }}" onMouseLeave="{{ untilt }}" style="border:1px solid var(--line);background:var(--card);padding:26px 24px 30px 24px;clip-path:polygon(0 0,calc(100% - 20px) 0,100% 20px,100% 100%,0 100%);transition:transform .25s,border-color .25s,box-shadow .25s;will-change:transform" style-hover="border-color:var(--acc);box-shadow:0 20px 50px var(--shadow),0 0 30px var(--glow)">
+              <div style="font-family:ui-monospace,monospace;font-size:13px;color:var(--acc);letter-spacing:2px;margin-bottom:14px">{{ sv.num }}</div>
+              <div style="font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:700;font-size:18px;margin-bottom:10px">{{ sv.title }}</div>
+              <div style="color:var(--mut);font-size:14px;line-height:1.6;text-wrap:pretty">{{ sv.desc }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="border:1px solid var(--line);background:var(--card);padding:40px;clip-path:polygon(0 0,calc(100% - 28px) 0,100% 28px,100% 100%,0 100%);max-width:680px">
+          <div style="font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:700;font-size:22px;margin-bottom:24px">{{ t.serviceCta }}</div>
+          <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+            <div style="border:1px solid var(--acc);color:var(--acc);padding:18px 22px;font-weight:600">{{ t.formSent }}</div>
+          </sc-if>
+          <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+            <form onSubmit="{{ sendForm }}" style="display:flex;flex-direction:column;gap:14px">
+              <input data-k="name" onChange="{{ onCF }}" value="{{ cf.name }}" placeholder="{{ t.formName }}" style="padding:14px 16px;background:var(--bg2);border:1px solid var(--line);color:var(--text);font-size:15px;border-radius:0">
+              <input data-k="phone" onChange="{{ onCF }}" value="{{ cf.phone }}" placeholder="{{ t.formPhone }}" style="padding:14px 16px;background:var(--bg2);border:1px solid var(--line);color:var(--text);font-size:15px;border-radius:0">
+              <textarea data-k="msg" onChange="{{ onCF }}" value="{{ cf.msg }}" placeholder="{{ t.formMsg }}" rows="4" style="padding:14px 16px;background:var(--bg2);border:1px solid var(--line);color:var(--text);font-size:15px;resize:vertical;border-radius:0"></textarea>
+              <button type="submit" style="cursor:pointer;border:none;background:linear-gradient(90deg,#f5a800,#f07818);color:#16181f;font-weight:700;font-size:16px;padding:15px;clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px)">{{ t.formSend }}</button>
+            </form>
+          </sc-if>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ============ GALLERY ============ -->
+    <sc-if value="{{ pGallery }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Gallery" style="animation:fadeUp .5s ease both;max-width:1280px;margin:0 auto;padding:72px 28px">
+        <div style="display:flex;align-items:center;gap:12px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:3.5px;color:var(--acc);margin-bottom:12px"><span style="display:inline-block;width:26px;height:4px;background:repeating-linear-gradient(-45deg,#f5a800 0 5px,#f07818 5px 10px)"></span>// VISUALS</div>
+        <h2 style="font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:800;font-size:clamp(30px,4vw,52px);margin:0 0 44px 0;letter-spacing:-.5px">{{ t.galleryTitle }}</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px">
+          <sc-for list="{{ gal }}" as="g" hint-placeholder-count="6">
+            <figure style="margin:0;border:1px solid var(--line);background:var(--card);clip-path:polygon(0 0,calc(100% - 22px) 0,100% 22px,100% 100%,0 100%);transition:border-color .25s,transform .25s" style-hover="border-color:var(--acc);transform:translateY(-4px)">
+              <sc-if value="{{ g.hasImg }}" hint-placeholder-val="{{ false }}">
+                <img src="{{ g.img }}" alt="{{ g.caption }}" style="width:100%;height:240px;object-fit:cover;display:block">
+              </sc-if>
+              <sc-if value="{{ g.noImg }}" hint-placeholder-val="{{ true }}">
+                <div style="height:240px;background:var(--phbg);background-image:repeating-linear-gradient(45deg,transparent 0 14px,var(--line) 14px 15px);display:flex;align-items:center;justify-content:center"><span style="font-family:ui-monospace,monospace;font-size:11px;letter-spacing:2px;color:var(--mut)">{{ t.photo }}</span></div>
+              </sc-if>
+              <figcaption style="padding:16px 20px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:1.5px;color:var(--mut)">{{ g.caption }}</figcaption>
+            </figure>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ============ CONTACTS ============ -->
+    <sc-if value="{{ pContacts }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Contacts" style="animation:fadeUp .5s ease both;max-width:1280px;margin:0 auto;padding:72px 28px">
+        <div style="display:flex;align-items:center;gap:12px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:3.5px;color:var(--acc);margin-bottom:12px"><span style="display:inline-block;width:26px;height:4px;background:repeating-linear-gradient(-45deg,#f5a800 0 5px,#f07818 5px 10px)"></span>// CONTACT</div>
+        <h2 style="font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:800;font-size:clamp(30px,4vw,52px);margin:0 0 44px 0;letter-spacing:-.5px">{{ t.contactsTitle }}</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:32px">
+          <div style="display:flex;flex-direction:column;gap:0;border:1px solid var(--line);background:var(--card);clip-path:polygon(0 0,calc(100% - 26px) 0,100% 26px,100% 100%,0 100%)">
+            <sc-for list="{{ contactRows }}" as="cr" hint-placeholder-count="7">
+              <div style="display:flex;gap:20px;padding:18px 26px;border-bottom:1px solid var(--line);align-items:baseline">
+                <span style="flex:none;width:180px;font-family:ui-monospace,monospace;font-size:11px;letter-spacing:2px;color:var(--mut)">{{ cr.k }}</span>
+                <span style="font-size:16px;font-weight:600">{{ cr.v }}</span>
+              </div>
+            </sc-for>
+            <div style="flex:1;min-height:160px;background:var(--phbg);background-image:repeating-linear-gradient(45deg,transparent 0 14px,var(--line) 14px 15px);display:flex;align-items:center;justify-content:center"><span style="font-family:ui-monospace,monospace;font-size:11px;letter-spacing:2px;color:var(--mut)">map</span></div>
+          </div>
+          <div style="border:1px solid var(--line);background:var(--card);padding:40px;clip-path:polygon(0 0,calc(100% - 26px) 0,100% 26px,100% 100%,0 100%);align-self:start">
+            <div style="font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:700;font-size:22px;margin-bottom:24px">{{ t.heroCta2 }}</div>
+            <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+              <div style="border:1px solid var(--acc);color:var(--acc);padding:18px 22px;font-weight:600">{{ t.formSent }}</div>
+            </sc-if>
+            <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+              <form onSubmit="{{ sendForm }}" style="display:flex;flex-direction:column;gap:14px">
+                <input data-k="name" onChange="{{ onCF }}" value="{{ cf.name }}" placeholder="{{ t.formName }}" style="padding:14px 16px;background:var(--bg2);border:1px solid var(--line);color:var(--text);font-size:15px;border-radius:0">
+                <input data-k="phone" onChange="{{ onCF }}" value="{{ cf.phone }}" placeholder="{{ t.formPhone }}" style="padding:14px 16px;background:var(--bg2);border:1px solid var(--line);color:var(--text);font-size:15px;border-radius:0">
+                <textarea data-k="msg" onChange="{{ onCF }}" value="{{ cf.msg }}" placeholder="{{ t.formMsg }}" rows="5" style="padding:14px 16px;background:var(--bg2);border:1px solid var(--line);color:var(--text);font-size:15px;resize:vertical;border-radius:0"></textarea>
+                <button type="submit" style="cursor:pointer;border:none;background:linear-gradient(90deg,#f5a800,#f07818);color:#16181f;font-weight:700;font-size:16px;padding:15px;clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px)">{{ t.formSend }}</button>
+              </form>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ============ ADMIN ============ -->
+    <sc-if value="{{ pAdmin }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Admin" style="animation:fadeUp .4s ease both;max-width:1100px;margin:0 auto;padding:56px 28px">
+
+        <sc-if value="{{ adminLocked }}" hint-placeholder-val="{{ false }}">
+          <div style="max-width:420px;margin:80px auto;border:1px solid var(--line);background:var(--card);padding:44px;clip-path:polygon(0 0,calc(100% - 24px) 0,100% 24px,100% 100%,0 100%)">
+            <div style="font-family:ui-monospace,monospace;font-size:12px;letter-spacing:3px;color:var(--acc);margin-bottom:12px">// RESTRICTED</div>
+            <div style="font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:800;font-size:26px;margin-bottom:24px">Admin panel</div>
+            <form onSubmit="{{ tryPin }}" style="display:flex;flex-direction:column;gap:12px">
+              <input type="password" onChange="{{ onPin }}" value="{{ pin }}" placeholder="PIN" style="padding:14px 16px;background:var(--bg2);border:1px solid var(--line);color:var(--text);font-size:18px;letter-spacing:6px;text-align:center;border-radius:0">
+              <button type="submit" style="cursor:pointer;border:none;background:linear-gradient(90deg,#f5a800,#f07818);color:#16181f;font-weight:700;font-size:15px;padding:14px;clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)">Enter</button>
+            </form>
+            <sc-if value="{{ pinErr }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:14px;color:#e05555;font-size:13px">Wrong PIN. Try again.</div>
+            </sc-if>
+            <div style="margin-top:18px;color:var(--mut);font-size:12px;font-family:ui-monospace,monospace">Default PIN: 1234</div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ adminOpen }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:28px">
+              <div>
+                <div style="font-family:ui-monospace,monospace;font-size:12px;letter-spacing:3px;color:var(--acc);margin-bottom:8px">// CONTROL ROOM</div>
+                <div style="font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:800;font-size:30px">Admin panel</div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+                <span style="font-family:ui-monospace,monospace;font-size:11px;letter-spacing:1.5px;color:var(--mut)">EDIT LANG</span>
+                <div style="display:flex;gap:2px;border:1px solid var(--line);border-radius:8px;padding:3px;background:var(--bg2)">
+                  <sc-for list="{{ editLangTabs }}" as="el" hint-placeholder-count="3">
+                    <button data-lang="{{ el.code }}" onClick="{{ setEditLang }}" style="border:none;cursor:pointer;font-size:11px;font-weight:700;letter-spacing:.6px;padding:5px 10px;border-radius:6px;background:{{ el.bg }};color:{{ el.col }}">{{ el.label }}</button>
+                  </sc-for>
+                </div>
+                <button onClick="{{ resetAll }}" style="cursor:pointer;background:transparent;border:1px solid var(--line);border-radius:8px;color:var(--mut);font-size:12px;padding:8px 14px" style-hover="border-color:#e05555;color:#e05555">Reset demo content</button>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px;border-bottom:1px solid var(--line);padding-bottom:16px">
+              <sc-for list="{{ aTabs }}" as="at" hint-placeholder-count="5">
+                <button data-k="{{ at.k }}" onClick="{{ setATab }}" style="cursor:pointer;border:1px solid {{ at.bd }};background:{{ at.bg }};color:{{ at.col }};font-weight:700;font-size:13px;padding:9px 18px;clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px)">{{ at.label }}</button>
+              </sc-for>
+            </div>
+
+            <!-- ADMIN: PRODUCTS -->
+            <sc-if value="{{ atP }}" hint-placeholder-val="{{ false }}">
+              <div>
+                <sc-if value="{{ pfClosed }}" hint-placeholder-val="{{ true }}">
+                  <div>
+                    <button onClick="{{ addProduct }}" style="cursor:pointer;border:none;background:linear-gradient(90deg,#f5a800,#f07818);color:#16181f;font-weight:700;font-size:14px;padding:12px 24px;clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);margin-bottom:20px">+ Add product</button>
+                    <div style="display:flex;flex-direction:column;gap:8px">
+                      <sc-for list="{{ aProds }}" as="ap" hint-placeholder-count="5">
+                        <div style="display:flex;align-items:center;gap:16px;border:1px solid var(--line);background:var(--card);padding:14px 18px">
+                          <span style="flex:1;font-weight:600;font-size:14px">{{ ap.label }}</span>
+                          <span style="font-family:ui-monospace,monospace;font-size:11px;letter-spacing:1px;color:var(--mut)">{{ ap.mode }}</span>
+                          <span style="font-weight:700;color:var(--acc);font-size:14px">{{ ap.price }}</span>
+                          <button data-id="{{ ap.id }}" onClick="{{ editProduct }}" style="cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--text);font-size:12px;padding:7px 14px;border-radius:6px" style-hover="border-color:var(--acc)">Edit</button>
+                          <button data-id="{{ ap.id }}" onClick="{{ delProduct }}" style="cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--mut);font-size:12px;padding:7px 14px;border-radius:6px" style-hover="border-color:#e05555;color:#e05555">Delete</button>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ pfOpen }}" hint-placeholder-val="{{ false }}">
+                  <div style="border:1px solid var(--acc);background:var(--card);padding:32px;clip-path:polygon(0 0,calc(100% - 22px) 0,100% 22px,100% 100%,0 100%)">
+                    <div style="font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:700;font-size:20px;margin-bottom:22px">{{ pfTitle }}</div>
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:14px">
+                      <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--mut)">Name ({{ editLangUp }})
+                        <input data-k="name" onChange="{{ onPF }}" value="{{ pfName }}" style="padding:11px 13px;background:var(--bg2);border:1px solid var(--line);color:var(--text);font-size:14px;border-radius:0">
+                      </label>
+                      <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--mut)">Brand
+                        <input data-k="brand" onChange="{{ onPF }}" value="{{ pf.brand }}" style="padding:11px 13px;background:var(--bg2);border:1px solid var(--line);color:var(--text);font-size:14px;border-radius:0">
+                      </label>
+                      <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--mut)">Category
+                        <select data-k="cat" onChange="{{ onPF }}" value="{{ pf.cat }}" style="padding:11px 13px;background:var(--bg2);border:1px solid var(--line);color:var(--text);font-size:14px">
+                          <option value="forklift">forklift</option><option value="parts">parts</option><option value="wheels">wheels</option>
+                        </select>
+                      </label>
+                      <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--mut)">Mode
+                        <select data-k="mode" onChange="{{ onPF }}" value="{{ pf.mode }}" style="padding:11px 13px;background:var(--bg2);border:1px solid var(--line);color:var(--text);font-size:14px">
+                          <option value="sale">sale</option><option value="rent">rent</option>
+                        </select>
+                      </label>
+                      <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--mut)">Fuel
+                        <select data-k="fuel" onChange="{{ onPF }}" value="{{ pfFuel }}" style="padding:11px 13px;background:var(--bg2);border:1px solid var(--line);color:var(--text);font-size:14px">
+                          <option value="">—</option><option value="electric">electric</option><option value="diesel">diesel</option><option value="gasoline">gasoline / LPG</option>
+                        </select>
+                      </label>
+                      <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--mut)">Condition
+                        <select data-k="cond" onChange="{{ onPF }}" value="{{ pfCond }}" style="padding:11px 13px;background:var(--bg2);border:1px solid var(--line);color:var(--text);font-size:14px">
+                          <option value="">—</option><option value="new">new</option><option value="used">used</option>
+                        </select>
+                      </label>
+                      <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--mut)">Price (EUR)
+                        <input data-k="price" type="number" onChange="{{ onPF }}" value="{{ pf.price }}" style="padding:11px 13px;background:var(--bg2);border:1px solid var(--line);color:var(--text);font-size:14px;border-radius:0">
+                      </label>
+                      <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--mut)">Price unit
+                        <select data-k="unit" onChange="{{ onPF }}" value="{{ pf.unit }}" style="padding:11px 13px;background:var(--bg2);border:1px solid var(--line);color:var(--text);font-size:14px">
+                          <option value="">one-time</option><option value="mo">per month</option>
+                        </select>
+                      </label>
+                      <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--mut)">Capacity (e.g. 2.0 t)
+                        <input data-k="capacity" onChange="{{ onPF }}" value="{{ pf.capacity }}" style="padding:11px 13px;background:var(--bg2);border:1px solid var(--line);color:var(--text);font-size:14px;border-radius:0">
+                      </label>
+                      <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--mut)">Lift height (e.g. 4.5 m)
+                        <input data-k="lift" onChange="{{ onPF }}" value="{{ pf.lift }}" style="padding:11px 13px;background:var(--bg2);border:1px solid var(--line);color:var(--text);font-size:14px;border-radius:0">
+                      </label>
+                      <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--mut)">Year
+                        <input data-k="year" onChange="{{ onPF }}" value="{{ pf.year }}" style="padding:11px 13px;background:var(--bg2);border:1px solid var(--line);color:var(--text);font-size:14px;border-radius:0">
+                      </label>
+                      <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--mut)">Photo
+                        <input type="file" accept="image/*" onChange="{{ onPFImg }}" style="padding:9px;background:var(--bg2);border:1px solid var(--line);color:var(--mut);font-size:12px">
+                      </label>
+                    </div>
+                    <sc-if value="{{ pfHasImg }}" hint-placeholder-val="{{ false }}">
+                      <img src="{{ pf.img }}" alt="preview" style="height:110px;border:1px solid var(--line);display:block;margin-bottom:16px">
+                    </sc-if>
+                    <div style="display:flex;gap:10px">
+                      <button onClick="{{ savePF }}" style="cursor:pointer;border:none;background:linear-gradient(90deg,#f5a800,#f07818);color:#16181f;font-weight:700;font-size:14px;padding:12px 28px;clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)">Save</button>
+                      <button onClick="{{ cancelPF }}" style="cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--text);font-size:14px;padding:12px 24px">Cancel</button>
+                    </div>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-if>
+
+            <!-- ADMIN: NEWS -->
+            <sc-if value="{{ atN }}" hint-placeholder-val="{{ false }}">
+              <div>
+                <sc-if value="{{ nfClosed }}" hint-placeholder-val="{{ true }}">
+                  <div>
+                    <button onClick="{{ addNews }}" style="cursor:pointer;border:none;background:linear-gradient(90deg,#f5a800,#f07818);color:#16181f;font-weight:700;font-size:14px;padding:12px 24px;clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);margin-bottom:20px">+ Add news post</button>
+                    <div style="display:flex;flex-direction:column;gap:8px">
+                      <sc-for list="{{ aNews }}" as="an" hint-placeholder-count="3">
+                        <div style="display:flex;align-items:center;gap:16px;border:1px solid var(--line);background:var(--card);padding:14px 18px">
+                          <span style="font-family:ui-monospace,monospace;font-size:11px;color:var(--acc)">{{ an.date }}</span>
+                          <span style="flex:1;font-weight:600;font-size:14px">{{ an.label }}</span>
+                          <button data-id="{{ an.id }}" onClick="{{ editNews }}" style="cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--text);font-size:12px;padding:7px 14px;border-radius:6px" style-hover="border-color:var(--acc)">Edit</button>
+                          <button data-id="{{ an.id }}" onClick="{{ delNews }}" style="cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--mut);font-size:12px;padding:7px 14px;border-radius:6px" style-hover="border-color:#e05555;color:#e05555">Delete</button>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ nfOpen }}" hint-placeholder-val="{{ false }}">
+                  <div style="border:1px solid var(--acc);background:var(--card);padding:32px;clip-path:polygon(0 0,calc(100% - 22px) 0,100% 22px,100% 100%,0 100%)">
+                    <div style="font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:700;font-size:20px;margin-bottom:22px">{{ nfTitle }}</div>
+                    <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:16px">
+                      <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--mut)">Date
+                        <input data-k="date" type="date" onChange="{{ onNF }}" value="{{ nf.date }}" style="padding:11px 13px;background:var(--bg2);border:1px solid var(--line);color:var(--text);font-size:14px;border-radius:0;max-width:220px">
+                      </label>
+                      <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--mut)">Title ({{ editLangUp }})
+                        <input data-k="title" onChange="{{ onNF }}" value="{{ nfTitleVal }}" style="padding:11px 13px;background:var(--bg2);border:1px solid var(--line);color:var(--text);font-size:14px;border-radius:0">
+                      </label>
+                      <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--mut)">Body ({{ editLangUp }})
+                        <textarea data-k="body" onChange="{{ onNF }}" value="{{ nfBodyVal }}" rows="5" style="padding:11px 13px;background:var(--bg2);border:1px solid var(--line);color:var(--text);font-size:14px;resize:vertical;border-radius:0"></textarea>
+                      </label>
+                      <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--mut)">Photo
+                        <input type="file" accept="image/*" onChange="{{ onNFImg }}" style="padding:9px;background:var(--bg2);border:1px solid var(--line);color:var(--mut);font-size:12px;max-width:320px">
+                      </label>
+                    </div>
+                    <div style="display:flex;gap:10px">
+                      <button onClick="{{ saveNF }}" style="cursor:pointer;border:none;background:linear-gradient(90deg,#f5a800,#f07818);color:#16181f;font-weight:700;font-size:14px;padding:12px 28px;clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)">Save</button>
+                      <button onClick="{{ cancelNF }}" style="cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--text);font-size:14px;padding:12px 24px">Cancel</button>
+                    </div>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-if>
+
+            <!-- ADMIN: GALLERY -->
+            <sc-if value="{{ atG }}" hint-placeholder-val="{{ false }}">
+              <div>
+                <label style="display:inline-flex;align-items:center;gap:10px;cursor:pointer;border:none;background:linear-gradient(90deg,#f5a800,#f07818);color:#16181f;font-weight:700;font-size:14px;padding:12px 24px;clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);margin-bottom:20px">+ Add photo
+                  <input type="file" accept="image/*" onChange="{{ addGal }}" style="display:none">
+                </label>
+                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px">
+                  <sc-for list="{{ aGal }}" as="ag" hint-placeholder-count="6">
+                    <div style="border:1px solid var(--line);background:var(--card)">
+                      <sc-if value="{{ ag.hasImg }}" hint-placeholder-val="{{ false }}">
+                        <img src="{{ ag.img }}" alt="{{ ag.cap }}" style="width:100%;height:140px;object-fit:cover;display:block">
+                      </sc-if>
+                      <sc-if value="{{ ag.noImg }}" hint-placeholder-val="{{ true }}">
+                        <div style="height:140px;background:var(--phbg);background-image:repeating-linear-gradient(45deg,transparent 0 14px,var(--line) 14px 15px);display:flex;align-items:center;justify-content:center"><span style="font-family:ui-monospace,monospace;font-size:10px;letter-spacing:2px;color:var(--mut)">no photo</span></div>
+                      </sc-if>
+                      <div style="padding:10px;display:flex;gap:8px;align-items:center">
+                        <input data-id="{{ ag.id }}" onChange="{{ onGalCap }}" value="{{ ag.cap }}" placeholder="Caption ({{ editLangUp }})" style="flex:1;padding:8px 10px;background:var(--bg2);border:1px solid var(--line);color:var(--text);font-size:12px;border-radius:0;min-width:0">
+                        <button data-id="{{ ag.id }}" onClick="{{ delGal }}" style="cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--mut);font-size:12px;padding:7px 12px;border-radius:6px" style-hover="border-color:#e05555;color:#e05555">✕</button>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+
+            <!-- ADMIN: TEXTS -->
+            <sc-if value="{{ atT }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:18px;max-width:760px">
+                <sc-for list="{{ textFields }}" as="tf" hint-placeholder-count="6">
+                  <label style="display:flex;flex-direction:column;gap:8px;font-size:12px;color:var(--mut)">
+                    <span style="font-family:ui-monospace,monospace;letter-spacing:1.5px">{{ tf.label }} ({{ editLangUp }})</span>
+                    <textarea data-k="{{ tf.k }}" onChange="{{ onTexts }}" value="{{ tf.val }}" rows="3" style="padding:12px 14px;background:var(--bg2);border:1px solid var(--line);color:var(--text);font-size:14px;line-height:1.6;resize:vertical;border-radius:0"></textarea>
+                  </label>
+                </sc-for>
+                <div style="color:var(--mut);font-size:12px">Changes save automatically.</div>
+              </div>
+            </sc-if>
+
+            <!-- ADMIN: CONTACTS -->
+            <sc-if value="{{ atC }}" hint-placeholder-val="{{ false }}">
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;max-width:760px">
+                <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--mut)">Address ({{ editLangUp }})
+                  <input data-k="address" onChange="{{ onContacts }}" value="{{ ca.address }}" style="padding:11px 13px;background:var(--bg2);border:1px solid var(--line);color:var(--text);font-size:14px;border-radius:0">
+                </label>
+                <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--mut)">Legal name ({{ editLangUp }})
+                  <input data-k="legal" onChange="{{ onContacts }}" value="{{ ca.legal }}" style="padding:11px 13px;background:var(--bg2);border:1px solid var(--line);color:var(--text);font-size:14px;border-radius:0">
+                </label>
+                <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--mut)">Working hours ({{ editLangUp }})
+                  <input data-k="hours" onChange="{{ onContacts }}" value="{{ ca.hours }}" style="padding:11px 13px;background:var(--bg2);border:1px solid var(--line);color:var(--text);font-size:14px;border-radius:0">
+                </label>
+                <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--mut)">Phone 1
+                  <input data-k="phone1" onChange="{{ onContacts }}" value="{{ ca.phone1 }}" style="padding:11px 13px;background:var(--bg2);border:1px solid var(--line);color:var(--text);font-size:14px;border-radius:0">
+                </label>
+                <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--mut)">Phone 2
+                  <input data-k="phone2" onChange="{{ onContacts }}" value="{{ ca.phone2 }}" style="padding:11px 13px;background:var(--bg2);border:1px solid var(--line);color:var(--text);font-size:14px;border-radius:0">
+                </label>
+                <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--mut)">E-mail
+                  <input data-k="email" onChange="{{ onContacts }}" value="{{ ca.email }}" style="padding:11px 13px;background:var(--bg2);border:1px solid var(--line);color:var(--text);font-size:14px;border-radius:0">
+                </label>
+                <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--mut)">Web
+                  <input data-k="web" onChange="{{ onContacts }}" value="{{ ca.web }}" style="padding:11px 13px;background:var(--bg2);border:1px solid var(--line);color:var(--text);font-size:14px;border-radius:0">
+                </label>
+                <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--mut)">Company ID
+                  <input data-k="idCode" onChange="{{ onContacts }}" value="{{ ca.idCode }}" style="padding:11px 13px;background:var(--bg2);border:1px solid var(--line);color:var(--text);font-size:14px;border-radius:0">
+                </label>
+                <div style="grid-column:1/-1;color:var(--mut);font-size:12px">Changes save automatically.</div>
+              </div>
+            </sc-if>
+
+          </div>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <!-- ============ PRODUCT MODAL ============ -->
+    <sc-if value="{{ hasSel }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ closeSel }}" style="position:fixed;inset:0;z-index:80;background:rgba(8,9,12,.72);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:24px;animation:fadeUp .25s ease both">
+        <div onClick="{{ stopClick }}" style="background:var(--card);border:1px solid var(--acc);max-width:860px;width:100%;max-height:88vh;overflow:auto;clip-path:polygon(0 0,calc(100% - 28px) 0,100% 28px,100% 100%,0 100%);box-shadow:0 40px 120px var(--shadow)">
+          <sc-if value="{{ sel.hasImg }}" hint-placeholder-val="{{ false }}">
+            <img src="{{ sel.img }}" alt="{{ sel.title }}" style="width:100%;height:300px;object-fit:cover;display:block">
+          </sc-if>
+          <sc-if value="{{ sel.noImg }}" hint-placeholder-val="{{ true }}">
+            <div style="height:220px;background:var(--phbg);background-image:repeating-linear-gradient(45deg,transparent 0 14px,var(--line) 14px 15px);display:flex;align-items:center;justify-content:center"><span style="font-family:ui-monospace,monospace;font-size:11px;letter-spacing:2px;color:var(--mut)">{{ t.photo }}</span></div>
+          </sc-if>
+          <div style="padding:32px 36px 36px 36px">
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
+              <sc-for list="{{ sel.badges }}" as="bd" hint-placeholder-count="3">
+                <span style="font-family:ui-monospace,monospace;font-size:10px;letter-spacing:1.5px;border:1px solid var(--line);border-radius:99px;padding:4px 10px;color:var(--mut)">{{ bd }}</span>
+              </sc-for>
+            </div>
+            <h3 style="font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:800;font-size:26px;margin:0 0 18px 0;line-height:1.3">{{ sel.title }}</h3>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:24px">
+              <sc-for list="{{ sel.specs }}" as="sp" hint-placeholder-count="4">
+                <div style="border:1px solid var(--line);padding:12px 16px">
+                  <div style="font-family:ui-monospace,monospace;font-size:10px;letter-spacing:1.5px;color:var(--mut);margin-bottom:6px">{{ sp.k }}</div>
+                  <div style="font-weight:700;font-size:16px">{{ sp.v }}</div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap">
+              <div style="font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:800;font-size:30px;background:linear-gradient(90deg,#f5a800,#f07818);-webkit-background-clip:text;background-clip:text;color:transparent">{{ sel.price }}</div>
+              <div style="display:flex;gap:10px">
+                <a href="#/contacts" onClick="{{ closeSel }}" style="text-decoration:none;background:linear-gradient(90deg,#f5a800,#f07818);color:#16181f;font-weight:700;font-size:15px;padding:13px 26px;clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)" style-hover="color:#16181f">{{ t.requestQuote }}</a>
+                <button onClick="{{ closeSel }}" style="cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--text);font-size:15px;padding:13px 24px">{{ t.close }}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+  <div data-screen-label="Home" style="animation: fadeUp .5s ease both; position: relative">
+
+        <!-- HERO -->
+        <section ref="{{ heroR }}" onMouseMove="{{ heroMove }}" style="position:relative;overflow:hidden;min-height:88vh;display:flex;align-items:center">
+          <div style="position:absolute;left:0;right:0;bottom:-4%;height:62%;perspective:520px;pointer-events:none;overflow:hidden">
+            <div style="position:absolute;inset:-80% -60% 0 -60%;transform:rotateX(58deg);overflow:hidden;-webkit-mask-image:linear-gradient(to bottom,transparent,black 48%);mask-image:linear-gradient(to bottom,transparent,black 48%)">
+              <div style="position:absolute;inset:-140px 0 0 0;background-image:linear-gradient(var(--gridc) 2px,transparent 2px),linear-gradient(90deg,var(--gridc) 2px,transparent 2px);background-size:64px 64px;animation:gridMove 2.4s linear infinite;will-change:transform"></div>
+            </div>
+          </div>
+          <div ref="{{ orbA }}" style="position:absolute;top:8%;right:12%;pointer-events:none;transition:transform .3s ease-out">
+            <div style="width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,var(--glow),transparent 65%);animation:floatA 7s ease-in-out infinite"></div>
+          </div>
+          <div ref="{{ orbB }}" style="position:absolute;bottom:0;left:-6%;pointer-events:none;transition:transform .4s ease-out">
+            <div style="width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,var(--glow),transparent 62%);animation:floatB 9s ease-in-out infinite"></div>
+          </div>
+
+          <div style="position:absolute;top:26px;left:50%;transform:translateX(-50%);font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:900;font-size:clamp(70px,11vw,170px);letter-spacing:8px;line-height:1;color:transparent;-webkit-text-stroke:1px var(--line);opacity:.6;pointer-events:none;white-space:nowrap;user-select:none">LOGIMOTORS</div>
+          <div style="position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0 1px,transparent 1px 4px)"></div>
+          <div style="position:absolute;top:22px;left:22px;width:26px;height:26px;border-left:2px solid var(--acc);border-top:2px solid var(--acc);opacity:.5;pointer-events:none"></div>
+          <div style="position:absolute;top:22px;right:22px;width:26px;height:26px;border-right:2px solid var(--acc);border-top:2px solid var(--acc);opacity:.5;pointer-events:none"></div>
+          <div style="position:absolute;bottom:22px;left:22px;width:26px;height:26px;border-left:2px solid var(--acc);border-bottom:2px solid var(--acc);opacity:.5;pointer-events:none"></div>
+          <div style="position:absolute;bottom:22px;right:22px;width:26px;height:26px;border-right:2px solid var(--acc);border-bottom:2px solid var(--acc);opacity:.5;pointer-events:none"></div>
+          <div style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none;animation:cueBob 2.2s ease-in-out infinite">
+            <span style="font-family:ui-monospace,monospace;font-size:10px;letter-spacing:3px;color:var(--mut)">SCROLL</span>
+            <span style="display:block;width:1px;height:26px;background:linear-gradient(var(--acc),transparent)"></span>
+          </div>
+
+          <div style="position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:60px 28px;display:flex;align-items:center;gap:48px;flex-wrap:wrap;width:100%;box-sizing:border-box">
+            <div style="flex:1.4;min-width:340px">
+              <div style="display:inline-flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:99px;padding:7px 16px;font-family:ui-monospace,monospace;font-size:11px;letter-spacing:2.5px;color:var(--mut);margin-bottom:28px">
+                <span style="width:7px;height:7px;border-radius:50%;background:linear-gradient(90deg,#f5a800,#f07818);animation:pulseGlow 2s ease-in-out infinite"></span>
+                LOGIMOTORS LTD — RUSTAVI, GEORGIA
+              </div>
+              <h1 style="font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:900;font-size:clamp(42px,5.4vw,82px);line-height:1.04;margin:0 0 12px 0;letter-spacing:-1.5px;text-wrap:balance">{{ tx.heroTitle }}</h1>
+              <span style="display:block;width:220px;height:8px;background:repeating-linear-gradient(-45deg,#f5a800 0 12px,#f07818 12px 18px,#16181f 18px 30px);margin:20px 0 28px 0"></span>
+              <p style="font-size:19px;line-height:1.65;color:var(--mut);max-width:560px;margin:0 0 36px 0;text-wrap:pretty">{{ tx.heroSub }}</p>
+              <div style="display:flex;gap:14px;flex-wrap:wrap">
+                <a href="#/products" style="text-decoration:none;display:inline-block;background:linear-gradient(90deg,#f5a800,#f07818);color:#16181f;font-weight:700;font-size:16px;padding:16px 34px;clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px);transition:transform .2s,box-shadow .2s" style-hover="transform:translateY(-3px);box-shadow:0 16px 40px var(--glow),0 6px 18px rgba(0,0,0,.35);color:#16181f">{{ t.heroCta1 }}</a>
+                <a href="#/contacts" style="text-decoration:none;display:inline-block;background:transparent;color:var(--text);border:1px solid var(--line);font-weight:600;font-size:16px;padding:15px 34px;clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px);transition:border-color .2s,transform .2s" style-hover="border-color:var(--acc);transform:translateY(-3px)">{{ t.heroCta2 }}</a>
+              </div>
+            </div>
+
+            <div ref="{{ ringWrap }}" style="flex:1;min-width:320px;display:flex;justify-content:center;transition:transform .3s ease-out">
+              <div style="position:relative;width:400px;height:400px">
+                <div style="position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,transparent 74%,var(--glow) 92%,transparent 100%);animation:spinSlow 5s linear infinite"></div>
+                <div style="position:absolute;inset:0;border-radius:50%;background:repeating-conic-gradient(var(--line) 0deg 1deg,transparent 1deg 6deg);-webkit-mask-image:radial-gradient(circle,transparent 61%,black 62%,black 70%,transparent 71%);mask-image:radial-gradient(circle,transparent 61%,black 62%,black 70%,transparent 71%);animation:spinSlow 70s linear infinite reverse"></div>
+                <div style="position:absolute;inset:16px;border-radius:50%;border:1px dashed var(--acc);opacity:.55;animation:spinSlow 26s linear infinite"></div>
+                <div style="position:absolute;inset:48px;border-radius:50%;border:1px solid var(--line);animation:spinSlow 44s linear infinite reverse"></div>
+                <div style="position:absolute;inset:74px;border-radius:50%;background:radial-gradient(circle,var(--glow),transparent 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center">
+                  <span style="font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:900;font-size:72px;background:linear-gradient(90deg,#f5a800,#f07818);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1;filter:drop-shadow(0 0 22px var(--glow))">20+</span>
+                  <span style="font-family:ui-monospace,monospace;font-size:11px;letter-spacing:2.5px;color:var(--mut);max-width:180px">{{ tYears }}</span>
+                </div>
+                <div style="position:absolute;top:-6px;left:6%;animation:floatA 6s ease-in-out infinite"><span style="display:inline-block;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:8px 14px;font-family:ui-monospace,monospace;font-size:11px;letter-spacing:1.5px;box-shadow:0 10px 30px var(--shadow)">1.5 – 5.0 t</span></div>
+                <div style="position:absolute;top:34%;right:-34px;animation:floatB 7s ease-in-out infinite"><span style="display:inline-block;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:8px 14px;font-family:ui-monospace,monospace;font-size:11px;letter-spacing:1.5px;color:var(--acc);box-shadow:0 10px 30px var(--shadow)">ELECTRIC</span></div>
+                <div style="position:absolute;bottom:8%;left:-20px;animation:floatA 8s ease-in-out infinite"><span style="display:inline-block;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:8px 14px;font-family:ui-monospace,monospace;font-size:11px;letter-spacing:1.5px;box-shadow:0 10px 30px var(--shadow)">DIESEL · GAS</span></div>
+                <div style="position:absolute;bottom:-14px;right:14%;animation:floatB 9s ease-in-out infinite"><span style="display:inline-block;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:8px 14px;font-family:ui-monospace,monospace;font-size:11px;letter-spacing:1.5px;color:var(--acc);box-shadow:0 10px 30px var(--shadow)">24/7</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- BRAND MARQUEE -->
+        <div style="border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;padding:14px 0;background:var(--bg2)">
+          <div style="display:flex;width:max-content;animation:marqueeMove 36s linear infinite">
+            <span style="white-space:nowrap;font-family:ui-monospace,monospace;font-size:13px;letter-spacing:4px;color:var(--mut);padding-right:12px">{{ brands }}</span>
+            <span style="white-space:nowrap;font-family:ui-monospace,monospace;font-size:13px;letter-spacing:4px;color:var(--mut);padding-right:12px">{{ brands }}</span>
+            <span style="white-space:nowrap;font-family:ui-monospace,monospace;font-size:13px;letter-spacing:4px;color:var(--mut);padding-right:12px">{{ brands }}</span>
+            <span style="white-space:nowrap;font-family:ui-monospace,monospace;font-size:13px;letter-spacing:4px;color:var(--mut);padding-right:12px">{{ brands }}</span>
+          </div>
+          <div style="display:flex;width:max-content;animation:marqueeMove2 52s linear infinite;margin-top:6px">
+            <span style="white-space:nowrap;font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:800;font-size:24px;letter-spacing:3px;color:transparent;-webkit-text-stroke:1px var(--line);padding-right:12px">{{ brands }}</span>
+            <span style="white-space:nowrap;font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:800;font-size:24px;letter-spacing:3px;color:transparent;-webkit-text-stroke:1px var(--line);padding-right:12px">{{ brands }}</span>
+            <span style="white-space:nowrap;font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:800;font-size:24px;letter-spacing:3px;color:transparent;-webkit-text-stroke:1px var(--line);padding-right:12px">{{ brands }}</span>
+            <span style="white-space:nowrap;font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:800;font-size:24px;letter-spacing:3px;color:transparent;-webkit-text-stroke:1px var(--line);padding-right:12px">{{ brands }}</span>
+          </div>
+        </div>
+
+        <!-- STATS -->
+        <section style="max-width:1280px;margin:0 auto;padding:72px 28px 24px 28px">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px">
+            <sc-for list="{{ stats }}" as="st" hint-placeholder-count="4">
+              <div style="position:relative;overflow:hidden;border:1px solid var(--line);background:var(--card);padding:30px 28px 34px 28px;clip-path:polygon(0 0,calc(100% - 20px) 0,100% 20px,100% 100%,0 100%);transition:border-color .25s,transform .25s,box-shadow .25s" style-hover="border-color:var(--acc);transform:translateY(-4px);box-shadow:0 18px 44px var(--shadow),0 0 28px var(--glow)">
+                <div style="width:36px;height:5px;background:repeating-linear-gradient(-45deg,#f5a800 0 6px,#f07818 6px 12px);margin-bottom:20px"></div>
+                <div style="font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:800;font-size:52px;background:linear-gradient(90deg,#f5a800,#f07818);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.05">{{ st.n }}</div>
+                <div style="margin-top:12px;color:var(--mut);font-family:ui-monospace,monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase">{{ st.label }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </section>
+
+        <!-- SERVICES -->
+        <section style="max-width:1280px;margin:0 auto;padding:72px 28px">
+          <div style="display:flex;align-items:center;gap:12px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:3.5px;color:var(--acc);margin-bottom:12px"><span style="display:inline-block;width:26px;height:4px;background:repeating-linear-gradient(-45deg,#f5a800 0 5px,#f07818 5px 10px)"></span>// SERVICES</div>
+          <h2 style="font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:800;font-size:clamp(28px,3.4vw,44px);margin:0 0 36px 0;letter-spacing:-.5px">{{ t.secServices }}</h2>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+            <sc-for list="{{ services }}" as="sv" hint-placeholder-count="5">
+              <div onMouseMove="{{ tilt }}" onMouseLeave="{{ untilt }}" style="position:relative;overflow:hidden;border:1px solid var(--line);background:var(--card);padding:26px 24px 30px 24px;clip-path:polygon(0 0,calc(100% - 20px) 0,100% 20px,100% 100%,0 100%);transition:transform .25s ease,border-color .25s,box-shadow .25s;will-change:transform" style-hover="border-color:var(--acc);box-shadow:0 18px 44px var(--shadow),0 0 28px var(--glow)">
+                <div style="position:absolute;top:-16px;right:0;font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:900;font-size:84px;line-height:1;color:transparent;-webkit-text-stroke:1px var(--line);pointer-events:none;user-select:none">{{ sv.num }}</div>
+                <div style="font-family:ui-monospace,monospace;font-size:13px;color:var(--acc);letter-spacing:2px;margin-bottom:14px">{{ sv.num }}</div>
+                <div style="font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:700;font-size:18px;margin-bottom:10px">{{ sv.title }}</div>
+                <div style="color:var(--mut);font-size:14px;line-height:1.6;text-wrap:pretty">{{ sv.desc }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </section>
+
+        <!-- FEATURED -->
+        <section style="max-width: 1280px; margin: 0 auto; padding: 24px 28px 72px 28px">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:36px">
+            <div>
+              <div style="display:flex;align-items:center;gap:12px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:3.5px;color:var(--acc);margin-bottom:12px"><span style="display:inline-block;width:26px;height:4px;background:repeating-linear-gradient(-45deg,#f5a800 0 5px,#f07818 5px 10px)"></span>// STOCK</div>
+              <h2 style="font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:800;font-size:clamp(28px,3.4vw,44px);margin:0;letter-spacing:-.5px">{{ t.secFeatured }}</h2>
+            </div>
+            <a href="#/products" style="font-weight:600;font-size:15px;text-decoration:none;border-bottom:2px solid var(--acc)">{{ t.viewAll }} →</a>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px">
+            <sc-for list="{{ featured }}" as="pr" hint-placeholder-count="3">
+              <div data-id="{{ pr.id }}" onClick="{{ openProduct }}" onMouseMove="{{ tilt }}" onMouseLeave="{{ untilt }}" style="cursor:pointer;border:1px solid var(--line);background:var(--card);clip-path:polygon(0 0,calc(100% - 24px) 0,100% 24px,100% 100%,0 100%);transition:transform .25s,border-color .25s,box-shadow .25s;will-change:transform" style-hover="border-color:var(--acc);box-shadow:0 20px 50px var(--shadow),0 0 30px var(--glow)">
+                <sc-if value="{{ pr.hasImg }}" hint-placeholder-val="{{ false }}">
+                  <img src="{{ pr.img }}" alt="{{ pr.title }}" style="width:100%;height:200px;object-fit:cover;display:block">
+                </sc-if>
+                <sc-if value="{{ pr.noImg }}" hint-placeholder-val="{{ true }}">
+                  <div style="height:200px;background:var(--phbg);background-image:repeating-linear-gradient(45deg,transparent 0 14px,var(--line) 14px 15px);display:flex;align-items:center;justify-content:center"><span style="font-family:ui-monospace,monospace;font-size:11px;letter-spacing:2px;color:var(--mut)">{{ t.photo }}</span></div>
+                </sc-if>
+                <div style="padding:20px 22px 24px 22px">
+                  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
+                    <sc-for list="{{ pr.badges }}" as="bd" hint-placeholder-count="2">
+                      <span style="font-family:ui-monospace,monospace;font-size:10px;letter-spacing:1.5px;border:1px solid var(--line);border-radius:99px;padding:4px 10px;color:var(--mut)">{{ bd }}</span>
+                    </sc-for>
+                  </div>
+                  <div style="font-weight:700;font-size:17px;line-height:1.35;margin-bottom:10px">{{ pr.title }}</div>
+                  <div style="font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:700;font-size:20px;background:linear-gradient(90deg,#f5a800,#f07818);-webkit-background-clip:text;background-clip:text;color:transparent">{{ pr.price }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </section>
+
+        <!-- NEWS PREVIEW -->
+        <section style="max-width:1280px;margin:0 auto;padding:0 28px 72px 28px">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:36px">
+            <div>
+              <div style="display:flex;align-items:center;gap:12px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:3.5px;color:var(--acc);margin-bottom:12px"><span style="display:inline-block;width:26px;height:4px;background:repeating-linear-gradient(-45deg,#f5a800 0 5px,#f07818 5px 10px)"></span>// FEED</div>
+              <h2 style="font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:800;font-size:clamp(28px,3.4vw,44px);margin:0;letter-spacing:-.5px">{{ t.secNews }}</h2>
+            </div>
+            <a href="#/news" style="font-weight:600;font-size:15px;text-decoration:none;border-bottom:2px solid var(--acc)">{{ t.viewAll }} →</a>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px">
+            <sc-for list="{{ newsTop }}" as="nw" hint-placeholder-count="2">
+              <a href="#/news" style="text-decoration:none;color:var(--text);border:1px solid var(--line);background:var(--card);padding:26px 26px 28px 26px;clip-path:polygon(0 0,calc(100% - 20px) 0,100% 20px,100% 100%,0 100%);display:block;transition:border-color .25s,transform .25s,box-shadow .25s" style-hover="border-color:var(--acc);transform:translateY(-4px);box-shadow:0 18px 44px var(--shadow),0 0 26px var(--glow);color:var(--text)">
+                <div style="font-family:ui-monospace,monospace;font-size:12px;letter-spacing:2px;color:var(--acc);margin-bottom:12px">{{ nw.date }}</div>
+                <div style="font-weight:700;font-size:18px;line-height:1.4;margin-bottom:10px;text-wrap:balance">{{ nw.title }}</div>
+                <div style="color:var(--mut);font-size:14px;line-height:1.6">{{ nw.excerpt }}</div>
+              </a>
+            </sc-for>
+          </div>
+        </section>
+
+        <!-- CTA BAND -->
+        <section style="position:relative;background:linear-gradient(90deg,#f5a800,#f07818);color:#16181f">
+          <span style="position:absolute;top:0;left:0;right:0;height:10px;background:repeating-linear-gradient(-45deg,#16181f 0 14px,transparent 14px 28px)"></span>
+          <span style="position:absolute;bottom:0;left:0;right:0;height:10px;background:repeating-linear-gradient(-45deg,#16181f 0 14px,transparent 14px 28px)"></span>
+          <div style="max-width:1280px;margin:0 auto;padding:72px 28px;display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap">
+            <div>
+              <div style="font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:900;font-size:clamp(26px,3vw,40px);letter-spacing:-.5px;margin-bottom:8px">{{ t.ctaTitle }}</div>
+              <div style="font-size:17px;font-weight:500;opacity:.85">{{ t.ctaSub }}</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+              <a href="tel:+995599585148" style="text-decoration:none;color:#16181f;font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:800;font-size:clamp(22px,2.4vw,32px)" style-hover="color:#16181f">(599) 585 148</a>
+              <a href="tel:+995555502502" style="text-decoration:none;color:#16181f;font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:800;font-size:clamp(22px,2.4vw,32px)" style-hover="color:#16181f">(555) 502 502</a>
+            </div>
+          </div>
+        </section>
+      </div></main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer style="position:relative;overflow:hidden;border-top:1px solid var(--line);background:var(--bg2);margin-top:0">
+    <span style="display:block;height:6px;background:repeating-linear-gradient(-45deg,#f5a800 0 12px,#16181f 12px 24px)"></span>
+    <div style="position:absolute;right:-14px;bottom:-40px;font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:900;font-size:210px;line-height:1;letter-spacing:6px;color:transparent;-webkit-text-stroke:1px var(--line);opacity:.55;pointer-events:none;user-select:none">LOGI</div>
+    <div style="position:relative;max-width:1280px;margin:0 auto;padding:56px 28px 28px 28px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:40px;padding-bottom:44px;border-bottom:1px solid var(--line)">
+        <div>
+          <div style="display:inline-flex;flex-direction:column;gap:3px;margin-bottom:16px">
+            <span style="font-family:'Unbounded','Noto Sans Georgian',sans-serif;font-weight:900;font-size:30px;letter-spacing:1px;line-height:1">LOGI</span>
+            <span style="display:block;height:4px;background:repeating-linear-gradient(-45deg,#f5a800 0 7px,#f07818 7px 14px)"></span>
+          </div>
+          <div style="color:var(--mut);font-size:14px;line-height:1.7;max-width:280px">{{ fLegal }}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <span style="font-family:ui-monospace,monospace;font-size:11px;letter-spacing:2.5px;color:var(--acc)">// MENU</span>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 24px;max-width:300px">
+            <sc-for list="{{ navItems }}" as="ni" hint-placeholder-count="7">
+              <a href="{{ ni.href }}" style="text-decoration:none;color:var(--mut);font-size:14px;transition:color .2s" style-hover="color:var(--acc)">{{ ni.label }}</a>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;color:var(--mut);font-size:14px;line-height:1.6">
+          <span style="font-family:ui-monospace,monospace;font-size:11px;letter-spacing:2.5px;color:var(--acc)">// CONTACT</span>
+          <span>{{ fAddress }}</span>
+          <span>{{ fPhones }}</span>
+          <a href="mailto:logi@logimotors.com" style="color:var(--acc);text-decoration:none">{{ fEmail }}</a>
+          <span>{{ fHours }}</span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:22px;font-family:ui-monospace,monospace;font-size:11px;letter-spacing:1.5px;color:var(--mut)">
+        <span>© 2026 LOGIMOTORS LTD · ID {{ fId }}</span>
+        <a href="#/admin" style="color:var(--mut);text-decoration:none" style-hover="color:var(--acc)">ADMIN</a>
+      </div>
+    </div>
+  </footer>
+  </sc-if>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;defaultLang&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;en&quot;, &quot;ka&quot;, &quot;ru&quot;], &quot;default&quot;: &quot;en&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Defaults&quot; },
+  &quot;defaultTheme&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;night&quot;, &quot;day&quot;], &quot;default&quot;: &quot;night&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Defaults&quot; }
+}">
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const lang = localStorage.getItem('logi_lang') || props.defaultLang || 'en';
+    const theme = localStorage.getItem('logi_theme') || props.defaultTheme || 'night';
+    this.state = {
+      ready: false, route: this._hash(), lang, night: theme !== 'day',
+      fMode: 'all', fFuel: 'all', selId: null,
+      cform: {}, sent: false,
+      adminOk: sessionStorage.getItem('logi_admin') === '1', pin: '', pinErr: false,
+      aTab: 'products', editLang: 'en',
+      pfOpen: false, pf: null, nfOpen: false, nf: null,
+      statsProg: 1
+    };
+    this.heroR = React.createRef();
+    this.orbA = React.createRef();
+    this.orbB = React.createRef();
+    this.ringWrap = React.createRef();
+    this.D = null;
+    this.content = null;
+  }
+
+  _hash() { const h = (location.hash || '').replace(/^#\/?/, ''); return h || 'home'; }
+
+  componentDidMount() {
+    this._onHash = () => { this.setState({ route: this._hash() }); window.scrollTo(0, 0); this._runStats(); };
+    window.addEventListener('hashchange', this._onHash);
+    this._applyTheme();
+    import('./logi-data.js').then((m) => {
+      this.D = m;
+      let saved = {};
+      try { saved = JSON.parse(localStorage.getItem('logi_content_v1') || '{}') || {}; } catch (e) { saved = {}; }
+      this.content = {
+        texts: Object.assign({}, m.DEFAULT_CONTENT.texts, saved.texts || {}),
+        products: saved.products || m.DEFAULT_CONTENT.products,
+        news: saved.news || m.DEFAULT_CONTENT.news,
+        gallery: saved.gallery || m.DEFAULT_CONTENT.gallery,
+        contacts: Object.assign({}, m.DEFAULT_CONTENT.contacts, saved.contacts || {}),
+        strings: saved.strings || {},
+        servicesOv: saved.servicesOv || {},
+        brandsOv: saved.brandsOv || ''
+      };
+      this.setState({ ready: true }, () => this._runStats());
+    });
+    this._initCursor();
+  }
+
+  _initCursor() {
+    if (!(window.matchMedia && window.matchMedia('(pointer:fine)').matches)) return;
+    const d = document.createElement('div');
+    d.style.cssText = 'position:fixed;left:0;top:0;width:340px;height:340px;border-radius:50%;pointer-events:none;z-index:0;transform:translate(-1000px,-1000px);background:radial-gradient(circle,var(--glow) 0%,transparent 65%);opacity:0;transition:opacity .4s';
+    document.body.appendChild(d);
+    this._cGlow = d;
+    let tx = -1000, ty = -1000, rx = -1000, ry = -1000;
+    this._cMove = (e) => { tx = e.clientX; ty = e.clientY; d.style.opacity = '1'; };
+    this._cOut = () => { d.style.opacity = '0'; };
+    document.addEventListener('mousemove', this._cMove, { passive: true });
+    document.documentElement.addEventListener('mouseleave', this._cOut);
+    const loop = () => {
+      rx += (tx - rx) * 0.12; ry += (ty - ry) * 0.12;
+      d.style.transform = 'translate(' + (rx - 170) + 'px,' + (ry - 170) + 'px)';
+      this._cRaf = requestAnimationFrame(loop);
+    };
+    loop();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('hashchange', this._onHash);
+    cancelAnimationFrame(this._raf);
+    cancelAnimationFrame(this._cRaf);
+    if (this._cMove) document.removeEventListener('mousemove', this._cMove);
+    if (this._cOut) document.documentElement.removeEventListener('mouseleave', this._cOut);
+    if (this._cGlow) this._cGlow.remove();
+  }
+
+  componentDidUpdate() { this._applyTheme(); }
+
+  _applyTheme() {
+    if (this.state.night) document.body.removeAttribute('data-day');
+    else document.body.setAttribute('data-day', '1');
+  }
+
+  _runStats() {
+    if (this._hash() !== 'home') return;
+    cancelAnimationFrame(this._raf);
+    const t0 = performance.now();
+    const tick = (t) => {
+      const p = Math.min(1, (t - t0) / 1400);
+      this.setState({ statsProg: p });
+      if (p < 1) this._raf = requestAnimationFrame(tick);
+    };
+    this._raf = requestAnimationFrame(tick);
+  }
+
+  _save() { localStorage.setItem('logi_content_v1', JSON.stringify(this.content)); this.forceUpdate(); }
+
+  _fmt(n) { return Number(n || 0).toLocaleString('en-US').replace(/,/g, ' '); }
+
+  _resize(file, cb) {
+    const rd = new FileReader();
+    rd.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const M = 1200;
+        const sc = Math.min(1, M / Math.max(img.width, img.height));
+        const w = Math.round(img.width * sc), h = Math.round(img.height * sc);
+        const cv = document.createElement('canvas');
+        cv.width = w; cv.height = h;
+        cv.getContext('2d').drawImage(img, 0, 0, w, h);
+        cb(cv.toDataURL('image/jpeg', 0.82));
+      };
+      img.src = rd.result;
+    };
+    rd.readAsDataURL(file);
+  }
+
+  _mapProd(p, t, lang) {
+    const badges = [];
+    if (p.mode) badges.push(p.mode === 'sale' ? t.modeSale : t.modeRent);
+    if (p.fuel) badges.push(p.fuel === 'electric' ? t.fuelElectric : p.fuel === 'diesel' ? t.fuelDiesel : t.fuelGasoline);
+    if (p.cond) badges.push(p.cond === 'new' ? t.condNew : t.condUsed);
+    const specs = [];
+    if (p.brand) specs.push({ k: t.brand, v: p.brand });
+    if (p.capacity) specs.push({ k: t.capacity, v: p.capacity });
+    if (p.lift) specs.push({ k: t.lift, v: p.lift });
+    if (p.year) specs.push({ k: t.year, v: p.year });
+    return {
+      id: p.id, title: (p.name && (p.name[lang] || p.name.en)) || '', brand: (p.brand || '').toUpperCase(),
+      badges, specs, img: p.img || '', hasImg: !!p.img, noImg: !p.img,
+      price: '€ ' + this._fmt(p.price) + (p.unit === 'mo' ? ' ' + t.perMonth : '')
+    };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const base = {
+      ready: s.ready, heroR: this.heroR, orbA: this.orbA, orbB: this.orbB, ringWrap: this.ringWrap,
+      themeLabel: s.night ? 'DAY' : 'NIGHT',
+      toggleTheme: () => { const night = !s.night; localStorage.setItem('logi_theme', night ? 'night' : 'day'); this.setState({ night }); },
+      setLang: (e) => { const lang = e.currentTarget.dataset.lang; localStorage.setItem('logi_lang', lang); this.setState({ lang }); },
+      heroMove: (e) => {
+        const r = this.heroR.current; if (!r) return;
+        const b = r.getBoundingClientRect();
+        const x = (e.clientX - b.left) / b.width - 0.5, y = (e.clientY - b.top) / b.height - 0.5;
+        if (this.orbA.current) this.orbA.current.style.transform = 'translate(' + (x * 46) + 'px,' + (y * 34) + 'px)';
+        if (this.orbB.current) this.orbB.current.style.transform = 'translate(' + (x * -30) + 'px,' + (y * -22) + 'px)';
+        if (this.ringWrap.current) this.ringWrap.current.style.transform = 'perspective(900px) rotateY(' + (x * 14) + 'deg) rotateX(' + (-y * 10) + 'deg)';
+      },
+      tilt: (e) => {
+        const el = e.currentTarget; const b = el.getBoundingClientRect();
+        const x = (e.clientX - b.left) / b.width - 0.5, y = (e.clientY - b.top) / b.height - 0.5;
+        el.style.transform = 'perspective(700px) rotateY(' + (x * 7) + 'deg) rotateX(' + (-y * 7) + 'deg) translateY(-4px)';
+      },
+      untilt: (e) => { e.currentTarget.style.transform = ''; },
+      stopClick: (e) => e.stopPropagation()
+    };
+    if (!s.ready || !this.D) return base;
+
+    const t = Object.assign({}, this.D.STRINGS[s.lang], (this.content.strings && this.content.strings[s.lang]) || {});
+    const lang = s.lang;
+    const C = this.content;
+    const tx = {};
+    Object.keys(C.texts).forEach((k) => { tx[k] = C.texts[k][lang] || C.texts[k].en || ''; });
+
+    const route = s.route;
+    const navDefs = [['home', t.navHome, '#/'], ['about', t.navAbout, '#/about'], ['products', t.navProducts, '#/products'], ['news', t.navNews, '#/news'], ['service', t.navService, '#/service'], ['gallery', t.navGallery, '#/gallery'], ['contacts', t.navContacts, '#/contacts']];
+    const navItems = navDefs.map((d) => ({ href: d[2], label: d[1], op: route === d[0] ? '1' : '.72', uc: route === d[0] ? 'var(--acc)' : 'transparent' }));
+    const langBtns = [['ka', 'ქარ'], ['en', 'ENG'], ['ru', 'РУС']].map((d) => ({
+      code: d[0], label: d[1],
+      bg: lang === d[0] ? 'linear-gradient(90deg,#f5a800,#f07818)' : 'transparent',
+      col: lang === d[0] ? '#16181f' : 'var(--mut)'
+    }));
+
+    const ease = 1 - Math.pow(1 - s.statsProg, 3);
+    const statDefs = [[20, '+', t.statYears], [500, '+', t.statMachines], [7000, '+', t.statParts], [24, '/7', t.statSupport]];
+    const stats = statDefs.map((d) => ({ n: Math.round(d[0] * ease) + d[1], label: d[2] }));
+
+    const services = this.D.SERVICES.map((sv) => {
+      const ov = (C.servicesOv && C.servicesOv[sv.k]) || {};
+      return { num: sv.num, title: (ov.title && ov.title[lang]) || sv.title[lang] || sv.title.en, desc: (ov.desc && ov.desc[lang]) || sv.desc[lang] || sv.desc.en };
+    });
+
+    const mapP = (p) => this._mapProd(p, t, lang);
+    const featured = C.products.filter((p) => p.cat === 'forklift').slice(0, 3).map(mapP);
+
+    let list = C.products;
+    if (s.fMode === 'sale') list = list.filter((p) => p.mode === 'sale' && p.cat === 'forklift');
+    else if (s.fMode === 'rent') list = list.filter((p) => p.mode === 'rent' && p.cat === 'forklift');
+    else if (s.fMode === 'parts') list = list.filter((p) => p.cat === 'parts');
+    else if (s.fMode === 'wheels') list = list.filter((p) => p.cat === 'wheels');
+    const fuelOn = s.fMode === 'sale' || s.fMode === 'rent';
+    if (fuelOn && s.fFuel !== 'all') list = list.filter((p) => p.fuel === s.fFuel);
+    const prods = list.map(mapP);
+
+    const modeDefs = [['all', t.filterAll], ['sale', t.modeSale], ['rent', t.modeRent], ['parts', t.partsTab], ['wheels', t.wheelsTab]];
+    const modeTabs = modeDefs.map((d) => ({
+      k: d[0], label: d[1],
+      bg: s.fMode === d[0] ? 'linear-gradient(90deg,#f5a800,#f07818)' : 'transparent',
+      col: s.fMode === d[0] ? '#16181f' : 'var(--text)',
+      bd: s.fMode === d[0] ? 'transparent' : 'var(--line)'
+    }));
+    const fuelDefs = [['all', t.filterAll], ['electric', t.fuelElectric], ['diesel', t.fuelDiesel], ['gasoline', t.fuelGasoline]];
+    const fuelChips = fuelDefs.map((d) => ({
+      k: d[0], label: d[1].toUpperCase(),
+      col: s.fFuel === d[0] ? 'var(--acc)' : 'var(--mut)',
+      bd: s.fFuel === d[0] ? 'var(--acc)' : 'var(--line)'
+    }));
+
+    const selP = s.selId ? C.products.find((p) => p.id === s.selId) : null;
+    const sel = selP ? mapP(selP) : { badges: [], specs: [], hasImg: false, noImg: true, title: '', price: '', img: '' };
+
+    const newsSorted = C.news.slice().sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+    const mapN = (n) => ({
+      id: n.id, date: n.date, img: n.img || '', hasImg: !!n.img,
+      title: (n.title && (n.title[lang] || n.title.en)) || '',
+      body: (n.body && (n.body[lang] || n.body.en)) || '',
+      excerpt: (((n.body && (n.body[lang] || n.body.en)) || '').slice(0, 120)) + '…'
+    });
+    const newsList = newsSorted.map(mapN);
+    const newsTop = newsList.slice(0, 2);
+
+    const gal = C.gallery.map((g) => ({ id: g.id, img: g.img || '', hasImg: !!g.img, noImg: !g.img, caption: (g.caption && (g.caption[lang] || g.caption.en)) || '' }));
+
+    const cc = C.contacts;
+    const ml = (v) => (v && (v[lang] || v.en)) || '';
+    const contactRows = [
+      { k: t.address.toUpperCase(), v: ml(cc.address) },
+      { k: t.phone.toUpperCase(), v: cc.phone1 + ' · ' + cc.phone2 },
+      { k: t.email.toUpperCase(), v: cc.email },
+      { k: t.web.toUpperCase(), v: cc.web },
+      { k: t.hours.toUpperCase(), v: ml(cc.hours) },
+      { k: t.legalName.toUpperCase(), v: ml(cc.legal) },
+      { k: t.idCode.toUpperCase(), v: cc.idCode }
+    ];
+
+    // ---- admin ----
+    const el = s.editLang;
+    const editLangTabs = [['ka', 'ქარ'], ['en', 'ENG'], ['ru', 'РУС']].map((d) => ({
+      code: d[0], label: d[1],
+      bg: el === d[0] ? 'linear-gradient(90deg,#f5a800,#f07818)' : 'transparent',
+      col: el === d[0] ? '#16181f' : 'var(--mut)'
+    }));
+    const aTabDefs = [['products', 'Products'], ['news', 'News'], ['gallery', 'Gallery'], ['texts', 'Texts'], ['contacts', 'Contacts']];
+    const aTabs = aTabDefs.map((d) => ({
+      k: d[0], label: d[1],
+      bg: s.aTab === d[0] ? 'linear-gradient(90deg,#f5a800,#f07818)' : 'transparent',
+      col: s.aTab === d[0] ? '#16181f' : 'var(--text)',
+      bd: s.aTab === d[0] ? 'transparent' : 'var(--line)'
+    }));
+    const aProds = C.products.map((p) => ({ id: p.id, label: (p.name && (p.name.en || p.name.ka)) || '', mode: (p.mode || '').toUpperCase(), price: '€ ' + this._fmt(p.price) }));
+    const aNews = newsSorted.map((n) => ({ id: n.id, date: n.date, label: (n.title && (n.title.en || n.title.ka)) || '' }));
+    const aGal = C.gallery.map((g) => ({ id: g.id, img: g.img || '', hasImg: !!g.img, noImg: !g.img, cap: (g.caption && g.caption[el]) || '' }));
+    const textDefs = [['heroTitle', 'HERO TITLE'], ['heroSub', 'HERO SUBTITLE'], ['about1', 'ABOUT — INTRO'], ['about2', 'ABOUT — CONCEPT'], ['about3', 'ABOUT — POLICY'], ['serviceIntro', 'SERVICE — INTRO']];
+    const textFields = textDefs.map((d) => ({ k: d[0], label: d[1], val: (C.texts[d[0]] && C.texts[d[0]][el]) || '' }));
+    this.D.SERVICES.forEach((sv) => {
+      const ov = (C.servicesOv && C.servicesOv[sv.k]) || {};
+      textFields.push({ k: 'sv:' + sv.k + ':title', label: 'SERVICE ' + sv.num + ' — TITLE', val: (ov.title && ov.title[el]) || sv.title[el] || '' });
+      textFields.push({ k: 'sv:' + sv.k + ':desc', label: 'SERVICE ' + sv.num + ' — TEXT', val: (ov.desc && ov.desc[el]) || sv.desc[el] || '' });
+    });
+    textFields.push({ k: 'brands', label: 'BRANDS TICKER — same for all languages', val: C.brandsOv || this.D.BRANDS });
+    Object.keys(this.D.STRINGS.en).forEach((k) => {
+      const ov = C.strings && C.strings[el] ? C.strings[el][k] : undefined;
+      textFields.push({ k: 's:' + k, label: 'UI — ' + k.replace(/([A-Z])/g, ' $1').toUpperCase(), val: ov != null ? ov : (this.D.STRINGS[el][k] || '') });
+    });
+    const ca = {
+      address: (cc.address && cc.address[el]) || '', legal: (cc.legal && cc.legal[el]) || '', hours: (cc.hours && cc.hours[el]) || '',
+      phone1: cc.phone1 || '', phone2: cc.phone2 || '', email: cc.email || '', web: cc.web || '', idCode: cc.idCode || ''
+    };
+    const pf = s.pf || {};
+    const nf = s.nf || {};
+
+    return Object.assign(base, {
+      t, tx, lang, navItems, langBtns, brands: (C.brandsOv || this.D.BRANDS), tYears: t.statYears.toUpperCase(),
+      showFuel: fuelOn, showWheelDemo: s.fMode === 'wheels' && !s.wheelHide,
+      replayWheel: () => { this.setState({ wheelHide: true }); setTimeout(() => this.setState({ wheelHide: false }), 40); },
+      stats, services, featured, prods, noProds: prods.length === 0, modeTabs, fuelChips,
+      newsList, newsTop, gal, contactRows,
+      pHome: route === 'home', pAbout: route === 'about', pProducts: route === 'products',
+      pNews: route === 'news', pService: route === 'service', pGallery: route === 'gallery',
+      pContacts: route === 'contacts', pAdmin: route === 'admin',
+      hasSel: !!selP, sel,
+      sent: s.sent, notSent: !s.sent, cf: { name: s.cform.name || '', phone: s.cform.phone || '', msg: s.cform.msg || '' },
+      fLegal: ml(cc.legal), fAddress: ml(cc.address), fPhones: cc.phone1 + ' · ' + cc.phone2, fEmail: cc.email, fHours: ml(cc.hours), fId: cc.idCode,
+
+      openProduct: (e) => this.setState({ selId: e.currentTarget.dataset.id }),
+      closeSel: () => this.setState({ selId: null }),
+      setMode: (e) => { const k = e.currentTarget.dataset.k; this.setState({ fMode: k, fFuel: (k === 'sale' || k === 'rent') ? this.state.fFuel : 'all' }); },
+      setFuel: (e) => this.setState({ fFuel: e.currentTarget.dataset.k }),
+      onCF: (e) => { const cform = Object.assign({}, this.state.cform); cform[e.currentTarget.dataset.k] = e.currentTarget.value; this.setState({ cform }); },
+      sendForm: (e) => { e.preventDefault(); this.setState({ sent: true, cform: {} }); setTimeout(() => this.setState({ sent: false }), 4000); },
+
+      // admin
+      adminLocked: route === 'admin' && !s.adminOk, adminOpen: route === 'admin' && s.adminOk,
+      pin: s.pin, pinErr: s.pinErr,
+      onPin: (e) => this.setState({ pin: e.currentTarget.value }),
+      tryPin: (e) => {
+        e.preventDefault();
+        if (this.state.pin === (localStorage.getItem('logi_pin') || '1234')) { sessionStorage.setItem('logi_admin', '1'); this.setState({ adminOk: true, pinErr: false, pin: '' }); }
+        else this.setState({ pinErr: true });
+      },
+      editLangTabs, editLangUp: el.toUpperCase(), aTabs,
+      atP: s.aTab === 'products', atN: s.aTab === 'news', atG: s.aTab === 'gallery', atT: s.aTab === 'texts', atC: s.aTab === 'contacts',
+      setATab: (e) => this.setState({ aTab: e.currentTarget.dataset.k, pfOpen: false, nfOpen: false }),
+      setEditLang: (e) => this.setState({ editLang: e.currentTarget.dataset.lang }),
+      resetAll: () => { if (confirm('Reset ALL content to demo defaults? Your changes will be lost.')) { localStorage.removeItem('logi_content_v1'); location.reload(); } },
+
+      aProds, pfOpen: s.pfOpen, pfClosed: !s.pfOpen, pf,
+      pfName: (pf.name && pf.name[el]) || '', pfFuel: pf.fuel || '', pfCond: pf.cond || '',
+      pfHasImg: !!pf.img, pfTitle: pf.id ? 'Edit product' : 'New product',
+      addProduct: () => this.setState({ pfOpen: true, pf: { id: null, brand: '', cat: 'forklift', mode: 'sale', fuel: 'electric', cond: 'used', price: '', unit: '', capacity: '', lift: '', year: '', img: '', name: { ka: '', en: '', ru: '' } } }),
+      editProduct: (e) => { const p = C.products.find((x) => x.id === e.currentTarget.dataset.id); if (p) this.setState({ pfOpen: true, pf: JSON.parse(JSON.stringify(p)) }); },
+      delProduct: (e) => { const id = e.currentTarget.dataset.id; if (confirm('Delete this product?')) { this.content.products = C.products.filter((x) => x.id !== id); this._save(); } },
+      onPF: (e) => {
+        const k = e.currentTarget.dataset.k, v = e.currentTarget.value;
+        const pf2 = JSON.parse(JSON.stringify(this.state.pf));
+        if (k === 'name') pf2.name[this.state.editLang] = v;
+        else if (k === 'fuel' || k === 'cond') pf2[k] = v || null;
+        else pf2[k] = v;
+        this.setState({ pf: pf2 });
+      },
+      onPFImg: (e) => { const f = e.currentTarget.files[0]; if (f) this._resize(f, (url) => { const pf2 = Object.assign({}, this.state.pf, { img: url }); this.setState({ pf: pf2 }); }); },
+      savePF: () => {
+        const p = JSON.parse(JSON.stringify(this.state.pf));
+        p.price = Number(p.price) || 0;
+        if (!p.id) { p.id = 'p' + Date.now(); this.content.products.push(p); }
+        else { const i = this.content.products.findIndex((x) => x.id === p.id); if (i >= 0) this.content.products[i] = p; }
+        this._save(); this.setState({ pfOpen: false, pf: null });
+      },
+      cancelPF: () => this.setState({ pfOpen: false, pf: null }),
+
+      aNews, nfOpen: s.nfOpen, nfClosed: !s.nfOpen, nf,
+      nfTitle: nf.id ? 'Edit news post' : 'New news post',
+      nfTitleVal: (nf.title && nf.title[el]) || '', nfBodyVal: (nf.body && nf.body[el]) || '',
+      addNews: () => this.setState({ nfOpen: true, nf: { id: null, date: new Date().toISOString().slice(0, 10), img: '', title: { ka: '', en: '', ru: '' }, body: { ka: '', en: '', ru: '' } } }),
+      editNews: (e) => { const n = C.news.find((x) => x.id === e.currentTarget.dataset.id); if (n) this.setState({ nfOpen: true, nf: JSON.parse(JSON.stringify(n)) }); },
+      delNews: (e) => { const id = e.currentTarget.dataset.id; if (confirm('Delete this post?')) { this.content.news = C.news.filter((x) => x.id !== id); this._save(); } },
+      onNF: (e) => {
+        const k = e.currentTarget.dataset.k, v = e.currentTarget.value;
+        const nf2 = JSON.parse(JSON.stringify(this.state.nf));
+        if (k === 'title' || k === 'body') nf2[k][this.state.editLang] = v; else nf2[k] = v;
+        this.setState({ nf: nf2 });
+      },
+      onNFImg: (e) => { const f = e.currentTarget.files[0]; if (f) this._resize(f, (url) => { const nf2 = Object.assign({}, this.state.nf, { img: url }); this.setState({ nf: nf2 }); }); },
+      saveNF: () => {
+        const n = JSON.parse(JSON.stringify(this.state.nf));
+        if (!n.id) { n.id = 'n' + Date.now(); this.content.news.push(n); }
+        else { const i = this.content.news.findIndex((x) => x.id === n.id); if (i >= 0) this.content.news[i] = n; }
+        this._save(); this.setState({ nfOpen: false, nf: null });
+      },
+      cancelNF: () => this.setState({ nfOpen: false, nf: null }),
+
+      aGal,
+      addGal: (e) => { const f = e.currentTarget.files[0]; if (f) this._resize(f, (url) => { this.content.gallery.push({ id: 'g' + Date.now(), img: url, caption: { ka: '', en: '', ru: '' } }); this._save(); }); },
+      onGalCap: (e) => { const g = this.content.gallery.find((x) => x.id === e.currentTarget.dataset.id); if (g) { if (!g.caption) g.caption = {}; g.caption[this.state.editLang] = e.currentTarget.value; this._save(); } },
+      delGal: (e) => { const id = e.currentTarget.dataset.id; if (confirm('Delete this photo?')) { this.content.gallery = C.gallery.filter((x) => x.id !== id); this._save(); } },
+
+      textFields,
+      onTexts: (e) => {
+        const k = e.currentTarget.dataset.k, v = e.currentTarget.value, L = this.state.editLang;
+        if (k === 'brands') { this.content.brandsOv = v; }
+        else if (k.indexOf('s:') === 0) {
+          const key = k.slice(2);
+          if (!this.content.strings[L]) this.content.strings[L] = {};
+          if (v === '') delete this.content.strings[L][key]; else this.content.strings[L][key] = v;
+        }
+        else if (k.indexOf('sv:') === 0) {
+          const parts = k.split(':'), svk = parts[1], fld = parts[2];
+          if (!this.content.servicesOv[svk]) this.content.servicesOv[svk] = {};
+          if (!this.content.servicesOv[svk][fld]) this.content.servicesOv[svk][fld] = {};
+          this.content.servicesOv[svk][fld][L] = v;
+        }
+        else { if (!this.content.texts[k]) this.content.texts[k] = {}; this.content.texts[k][L] = v; }
+        this._save();
+      },
+      ca,
+      onContacts: (e) => {
+        const k = e.currentTarget.dataset.k, v = e.currentTarget.value;
+        if (k === 'address' || k === 'legal' || k === 'hours') { if (!this.content.contacts[k] || typeof this.content.contacts[k] !== 'object') this.content.contacts[k] = {}; this.content.contacts[k][this.state.editLang] = v; }
+        else this.content.contacts[k] = v;
+        this._save();
+      }
+    });
+  }
+}
+
+</script>
+</body>
+</html>
